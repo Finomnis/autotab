@@ -42,6 +42,12 @@ int main(int argc, char **argv)
 
     if(argc == 2)
     {
+        if(std::string(argv[1]) == std::string("-h"))
+        {
+            std::cout << "Usage: " << argv[0] << " [input]" << std::endl;
+            return 2;
+        }
+
         std::ifstream fin(argv[1]);
         if(!fin.good())
         {
