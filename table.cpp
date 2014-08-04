@@ -8,12 +8,17 @@ using autotab::table;
 
 static size_t num_columns(std::string str)
 {
+    if(str.length() == 0)
+        return 0;
     return std::count(str.begin(), str.end(), '\t') + 1;
 }
 
 static std::vector<std::string> split_columns(std::string str)
 {
     std::vector<std::string> columns;
+
+    if(str.length() == 0)
+        return columns;
 
     size_t pos;
 
