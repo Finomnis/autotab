@@ -5,9 +5,9 @@
 #include <string>
 
 namespace autotab{
+
     void autotab(std::istream& input, std::ostream& output)
     {
-
         std::string newline;
     
         // read first line
@@ -28,8 +28,8 @@ namespace autotab{
         }
     
         output << t;
-    
     }
+
 }
 
 
