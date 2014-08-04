@@ -10,9 +10,11 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/" ${CMAKE_MODULE_PATH} )
 
 set(SOURCES
     main.cpp
+    table.cpp
 )
 
 set(HEADERS
+    table.hpp
 )
 
 add_executable(autotab ${SOURCES} ${HEADERS})
