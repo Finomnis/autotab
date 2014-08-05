@@ -4,7 +4,19 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <sys/stat.h>
 
+bool is_file(const char* path) {
+    struct stat buf;
+    stat(path, &buf);
+    return S_ISREG(buf.st_mode);
+}
+
+bool is_dir(const char* path) {
+    struct stat buf;
+    stat(path, &buf);
+    return S_ISDIR(buf.st_mode);
+}
 
 int main(int argc, const char **argv)
 {
@@ -22,20 +34,33 @@ int main(int argc, const char **argv)
     }
 
     // if files are provided, read from files
+    bool success = true;
     for(std::vector<std::string>::iterator file = files.begin();
             file != files.end(); file++)
     {
        
+        // print errormessage if file is a directory
+        if(is_dir(file->c_str()))
+        {
+            std::cerr << "autotab: " << (*file) << ": Is a directory"
+                      << std::endl;
+            success = false;
+            continue;
+        }
+
         // open file
         std::ifstream fin(file->c_str());
 
         // check if file was successfully opened
-        if(!fin.good())
+        if(!fin.good() || !fin.is_open())
         {
-            std::cerr << "Error: Unable to open file '" << (*file) << "'!"
-                     << std::endl;
+            std::cerr << "autotab: " << (*file) << ": No such file or directory"
+                      << std::endl;
+
             fin.close();
-            return 1;
+            
+            success = false;
+            continue;
         }
 
         // process
@@ -46,6 +71,6 @@ int main(int argc, const char **argv)
 
     }
    
-    // success!
-    return 0;
+    // success?
+    return success;
 }
