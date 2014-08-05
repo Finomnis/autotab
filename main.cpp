@@ -52,7 +52,7 @@ int main(int argc, const char **argv)
         std::ifstream fin(file->c_str());
 
         // check if file was successfully opened
-        if(!fin.good() || !fin.is_open())
+        if(!fin.good())
         {
             std::cerr << "autotab: " << (*file) << ": No such file or directory"
                       << std::endl;
