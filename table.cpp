@@ -99,7 +99,7 @@ std::ostream & autotab::operator<<(std::ostream &os, const table& t)
     {
         const std::vector<std::string> & curr_row = t.t[i];
 
-        // iterate through all columns
+        // iterate through all columns (cells)
         for(int j = 0; j < curr_row.size(); j++)
         {
             std::string curr_cell = curr_row[j];
@@ -107,15 +107,15 @@ std::ostream & autotab::operator<<(std::ostream &os, const table& t)
             // resize current cell
             curr_cell.resize(col_sizes[j], ' ');
 
-            // resize and print current cell
+            // print current cell
             os << curr_cell;
 
-            // print space between tabs
+            // print one space between cells
             if(j != curr_row.size() - 1)
                 os << " ";
         }
 
-        // add new line after row
+        // add newline after row
         if(i != t.t.size() - 1)
             os << std::endl;
     }
