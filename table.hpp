@@ -14,6 +14,10 @@ namespace autotab {
         
         bool add_row(std::string data);
 
+        size_t get_columns();
+
+        static size_t count_columns(std::string data);
+
     private:
         friend std::ostream & operator<<(std::ostream &os, const table& t);
     public:

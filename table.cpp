@@ -6,7 +6,7 @@
 
 using autotab::table;
 
-static size_t num_columns(std::string str)
+size_t table::count_columns(std::string str)
 {
     if(str.length() == 0)
         return 0;
@@ -70,7 +70,7 @@ static std::vector<size_t> get_column_widths(const size_t num_columns,
     return maxlen;
 }
 
-table::table(std::string data) : columns(num_columns(data))
+table::table(std::string data) : columns(count_columns(data))
 {
     // add the row to the table. will always succeed.
     add_row(data);
@@ -80,7 +80,7 @@ bool
 table::add_row(std::string data)
 {
     // can't be added if it doesn't have the same amount of columns
-    if(num_columns(data) != columns)
+    if(count_columns(data) != columns)
        return false;
 
     // add to table
@@ -123,3 +123,8 @@ std::ostream & autotab::operator<<(std::ostream &os, const table& t)
     return os;
 }
 
+size_t
+table::get_columns()
+{
+    return columns;
+}
