@@ -1,62 +1,18 @@
-#include "table.hpp"
+#include "autotab.hpp"
+#include "cmdline.hpp"
 
 #include <iostream>
 #include <fstream>
 #include <string>
 
-namespace autotab{
 
-    void autotab(std::istream& input, std::ostream& output)
-    {
-        std::string newline;
-    
-        // read first line
-        std::getline(input, newline);
-
-        // initialize table with first line
-        table t(newline);
-    
-        while(input.good())
-        {
-            // read next line
-            std::getline(input, newline);
-    
-            // add to table
-            if(!t.add_row(newline))
-            {
-                // if line isn't compatible with table, flush table
-                output << t << std::endl;
-
-                // create new table
-                t = table(newline);
-            }        
-    
-        }
-    
-        // flush final table. no newline.
-        // (the last line of a file is by definition not followed by a newline,
-        //  otherwise it wouldn't be the last line of the file.)
-        output << t;
-    }
-
-}
-
-
-int main(int argc, char **argv)
+int main(int argc, const char **argv)
 {
-    // print help message if help is requested or more than one
-    // argument is provided
-    if(argc > 1)
-    {
-        if(std::string(argv[1]) == std::string("-h") || argc > 2)
-        {
-            std::cout << "Usage: " << argv[0] << " [input]" << std::endl;
-            return 2;
-        }
-    }
+    // get list of files from commandline
+    std::vector<std::string> files = autotab::parse_cmdline(argc, argv);
 
     // if no file is provided, read from std::cin
-    if(argc == 1)
+    if(files.empty())
     {
         // process
         autotab::autotab(std::cin, std::cout);
@@ -65,18 +21,20 @@ int main(int argc, char **argv)
         return 0;
     }
 
-    // if file is provided, read from file
-    if(argc == 2)
+    // if files are provided, read from files
+    for(std::vector<std::string>::iterator file = files.begin();
+            file != files.end(); file++)
     {
        
         // open file
-        std::ifstream fin(argv[1]);
+        std::ifstream fin(file->c_str());
 
         // check if file was successfully opened
         if(!fin.good())
         {
-            std::cerr << "Error: Unable to open file '" << argv[1] << "'!"
+            std::cerr << "Error: Unable to open file '" << (*file) << "'!"
                      << std::endl;
+            fin.close();
             return 1;
         }
 
@@ -86,10 +44,8 @@ int main(int argc, char **argv)
         // close file
         fin.close();
 
-        // success!
-        return 0;
     }
    
-    // should never happen
-    return 1;
+    // success!
+    return 0;
 }
