@@ -67,5 +67,5 @@ int main(int argc, const char **argv)
     }
    
     // success?
-    return success;
+    return success ? 0 : 1;
 }
